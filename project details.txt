@@ -1,0 +1,3 @@
+connect to clustor databse user
+username - nipuna
+pass - nipuna2001
