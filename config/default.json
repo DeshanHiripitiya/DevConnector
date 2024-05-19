@@ -1,3 +1,4 @@
 {
-    "mongoURI":"mongodb+srv://nipuna:nipuna2001@cluster0.exmbkq6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongoURI":"mongodb+srv://nipuna:nipuna2001@cluster0.exmbkq6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "jwtSecret":"mysecrettoken"
 }
