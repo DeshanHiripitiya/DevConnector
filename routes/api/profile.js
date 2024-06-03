@@ -6,7 +6,7 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
-// const User = require('../../models/User');
+const User = require('../../models/User');
 // const Post = require('../../models/Post');
 
 //---------------------------------testing that these are work
@@ -80,7 +80,7 @@ router.post(
     if(status) profileFields.status=status;
     if(githubusername) profileFields.githubusername=githubusername;
     if(skills){
-        profileFields.skills=skills.split(',').map(skill=>skill.trim());
+         profileFields.skills = skills.map((skill) => skill.trim());
     } 
 
 //build social object
@@ -102,6 +102,7 @@ try{
         { $set: profileFields },
         { new: true, upsert: true, setDefaultsOnInsert: true }
       );
+  
 
        return res.json(profile);
     }
@@ -139,6 +140,122 @@ res.status(500).send("Server error");
     // add to profileFields
     // profileFields.social = socialFields;
    
+  }
+);
+
+// @route    GET api/profile
+// @desc     Get all profiles
+// @access   Public
+router.get('/', async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']); //.populate('user') is a Mongoose method used to automatically replace the specified user field in the Profile documents with documents from the User collection. The second argument, ['name', 'avatar'], specifies that only the name and avatar fields of the User documents should be included in the populated result. This helps to optimize performance by only retrieving necessary fields rather than the entire User document.
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/profile/user/:user_id
+// @desc     Get profile by user ID
+// @access   Public
+router.get(
+  '/user/:user_id',
+  // checkObjectId('user_id'),
+  async ({ params: { user_id } }, res) => {
+    try {
+      const profile = await Profile.findOne({
+        user: user_id
+      }).populate('user', ['name', 'avatar']);
+
+      if (!profile) return res.status(400).json({ msg: 'Profile not found' });
+
+      return res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      if(err.kind=='ObjectId'){
+        return res.status(400).json({ msg: 'Profile not found' });
+      }
+      return res.status(500).json({ msg: 'Server error' });
+    }
+  }
+);
+
+// @route    DELETE api/profile
+// @desc     Delete profile, user & posts
+// @access   Private
+router.delete('/', auth, async (req, res) => {
+  try {
+//todo - post remove
+
+    // Remove profile
+    await Profile.findOneAndDelete({user:req.user.id})
+    //remove user
+    await User.findOneAndDelete({_id:req.user.id})
+    
+
+    res.json({ msg: 'User deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    PUT api/profile/experience
+// @desc     Add profile experience
+// @access   Private
+router.put(
+  '/experience',
+  auth,
+  [
+  check('title', 'Title is required').notEmpty(),
+  check('company', 'Company is required').notEmpty(),
+  check('from', 'From date is required and needs to be from the past')
+    .notEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description
+    } = req.body;
+
+    const newExp = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+console.log(1);
+
+if (!profile) {
+  return res.status(400).json({ msg: 'Profile not found' });
+}
+
+      profile.experience.unshift(newExp); //unshift is a method that adds one or more elements to the beginning of an array and returns the new length of the array.
+console.log(2);
+      await profile.save();
+console.log(3);
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   }
 );
 
