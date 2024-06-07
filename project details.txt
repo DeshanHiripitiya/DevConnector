@@ -3,3 +3,5 @@ username - nipuna
 pass - nipuna2001
 
 mongodb+srv://nipuna:nipuna2001@cluster0.exmbkq6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+react-devtools-extention can't install
