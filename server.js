@@ -1,8 +1,11 @@
 const express = require('express')
 const connectDatabase = require('./config/db');
+const cors = require('cors');
 
 
 const  app = express()//creates a new Express application instance and assigns it to the constant variable app. This app variable can then be used to configure routes, middleware, and other settings for the web application.
+
+app.use(cors());
 
 //connect db
 connectDatabase();
