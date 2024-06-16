@@ -8,21 +8,25 @@ import Register from './component/auth/Register';
 import Alert from './component/layout/Alert';
 import { loadUser } from './actions/auth';
 import setAuthToken from './utills/setAuthToken';
-// import Dashboard from './components/dashboard/Dashboard';
-// import ProfileForm from './components/profile-forms/ProfileForm';
-// import AddExperience from './components/profile-forms/AddExperience';
-// import AddEducation from './components/profile-forms/AddEducation';
+import Dashboard from './component/dashboard/Dashboard';
+import ProfileForm from './component/profile-forms/CreateProfile';
+import AddExperience from './component/profile-forms/AddExperience';
 // import Profiles from './components/profiles/Profiles';
 // import Profile from './components/profile/Profile';
 // import Posts from './components/posts/Posts';
 // import Post from './components/post/Post';
 // import NotFound from './components/layout/NotFound';
-// import PrivateRoute from './components/routing/PrivateRoute';
+import PrivateRoute from './component/routeing/PrivateRoute';
 // import { LOGOUT } from './actions/types';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
+import AddEducation from './component/profile-forms/AddEducation';
+
+
+
+
 // import { loadUser } from './actions/auth';
 // import setAuthToken from './utils/setAuthToken';
 
@@ -50,44 +54,44 @@ const App = () => {
   }, []);
 
 
-  return(
-  <Provider store={store}>
-    <Router>
-      <Navbar />
-      <Alert />
-      <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
+  return (
+    <Provider store={store}>
+      <Router>
+        <Navbar />
+        <Alert />
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
 
-        {/* <Route path='profiles' element={<Profiles />} /> */}
-        {/* <Route path='profile/:id' element={<Profile />} /> */}
-        {/* <Route
-        path='dashboard'
-        element={<PrivateRoute component={Dashboard} />}
-      /> */}
-        {/* <Route
+          {/* <Route path='profiles' element={<Profiles />} /> */}
+          {/* <Route path='profile/:id' element={<Profile />} /> */}
+          <Route
+            path='dashboard'
+            element={<PrivateRoute component={Dashboard} />}
+          />
+          <Route
         path='create-profile'
         element={<PrivateRoute component={ProfileForm} />}
-      /> */}
-        {/* <Route
+      />
+          <Route
         path='edit-profile'
         element={<PrivateRoute component={ProfileForm} />}
-      /> */}
-        {/* <Route
+      />
+          <Route
         path='add-experience'
         element={<PrivateRoute component={AddExperience} />}
-      /> */}
-        {/* <Route
+      />
+          <Route
         path='add-education'
         element={<PrivateRoute component={AddEducation} />}
-      /> */}
-        {/* <Route path='posts' element={<PrivateRoute component={Posts} />} /> */}
-        {/* <Route path='posts/:id' element={<PrivateRoute component={Post} />} /> */}
-        {/* <Route path='/*' element={<NotFound />} /> */}
-      </Routes>
-    </Router>
-  </Provider>
-)};
+      />
+          {/* <Route path='posts' element={<PrivateRoute component={Posts} />} /> */}
+          {/* <Route path='posts/:id' element={<PrivateRoute component={Post} />} /> */}
+          {/* <Route path='/*' element={<NotFound />} /> */}
+        </Routes>
+      </Router>
+    </Provider>
+  );};
 
 export default App;

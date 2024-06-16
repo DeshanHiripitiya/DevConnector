@@ -7,7 +7,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
-// const Post = require('../../models/Post');
+const Post = require('../../models/Post');
 
 //---------------------------------testing that these are work
 
@@ -67,55 +67,57 @@ router.post(
       linkedin,
       facebook,
       // spread the rest of the fields we don't need to check
-    //   ...rest
+      //   ...rest
     } = req.body;
 
     //build the profile object
     const profileFields = {};
-    profileFields.user=req.user.id;
-    if(company) profileFields.company=company;
-    if(website) profileFields.website=website;
-    if(location) profileFields.location=location;
-    if(bio) profileFields.bio=bio;
-    if(status) profileFields.status=status;
-    if(githubusername) profileFields.githubusername=githubusername;
-    if(skills){
-         profileFields.skills = skills.map((skill) => skill.trim());
-    } 
+    profileFields.user = req.user.id;
+    if (company) profileFields.company = company;
+    if (website) profileFields.website = website;
+    if (location) profileFields.location = location;
+    if (bio) profileFields.bio = bio;
+    if (status) profileFields.status = status;
+    if (githubusername) profileFields.githubusername = githubusername;
+    if (skills) {
+      if (Array.isArray(skills)) {
+        profileFields.skills = skills.map((skill) => skill.trim());
+      } else {
+        profileFields.skills = skills.split(',').map((skill) => skill.trim());
+      }
+    }
 
-//build social object
-profileFields.social={};
+    //build social object
+    profileFields.social = {};
 
-if (youtube) profileFields.youtube = youtube;
-if (twitter) profileFields.twitter = twitter;
-if (facebook) profileFields.facebook = facebook;
-if (linkedin) profileFields.linkedin = linkedin;
-if (instagram) profileFields.instagram = instagram;
+    if (youtube) profileFields.youtube = youtube;
+    if (twitter) profileFields.twitter = twitter;
+    if (facebook) profileFields.facebook = facebook;
+    if (linkedin) profileFields.linkedin = linkedin;
+    if (instagram) profileFields.instagram = instagram;
 
-try{
-    let profile= await Profile.findOne({user:req.user.id});
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
 
-    if(profile){
+      if (profile) {
         //update
         let profile = await Profile.findOneAndUpdate(
-        { user: req.user.id },
-        { $set: profileFields },
-        { new: true, upsert: true, setDefaultsOnInsert: true }
-      );
-  
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
 
-       return res.json(profile);
+        return res.json(profile);
+      }
+      //create
+      profile = new Profile(profileFields);
+
+      await profile.save();
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
     }
-    //create
-    profile = new Profile(profileFields);
-     
-    await profile.save();
-    res.json(profile);
-
-}catch(err){
-console.error(err.message);
-res.status(500).send("Server error");
-}
     // build a profile
     // const profileFields = {
     //   user: req.user.id,
@@ -139,7 +141,6 @@ res.status(500).send("Server error");
     // }
     // add to profileFields
     // profileFields.social = socialFields;
-   
   }
 );
 
@@ -186,10 +187,10 @@ router.get(
 // @access   Private
 router.delete('/', auth, async (req, res) => {
   try {
-//todo - post remove
-
-    // Remove profile
-    await Profile.findOneAndDelete({user:req.user.id})
+//remove posts
+    Post.deleteMany({ user: req.user.id }),
+      // Remove profile
+      await Profile.findOneAndDelete({ user: req.user.id });
     //remove user
     await User.findOneAndDelete({_id:req.user.id})
     
