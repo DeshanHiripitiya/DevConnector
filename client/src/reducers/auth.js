@@ -6,7 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-//   ACCOUNT_DELETED,
+  ACCOUNT_DELETED,
 } from '../actions/types';
 
 const initialState = {
@@ -51,6 +51,7 @@ function authReducer(state = initialState, action) { //state: Represents the cur
         // user: payload,
       };
     case LOGOUT:
+    case ACCOUNT_DELETED:
       return {
         ...state,
         token: null,
