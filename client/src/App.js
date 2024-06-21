@@ -11,18 +11,16 @@ import setAuthToken from './utills/setAuthToken';
 import Dashboard from './component/dashboard/Dashboard';
 import ProfileForm from './component/profile-forms/CreateProfile';
 import AddExperience from './component/profile-forms/AddExperience';
-// import Profiles from './components/profiles/Profiles';
-// import Profile from './components/profile/Profile';
-// import Posts from './components/posts/Posts';
-// import Post from './components/post/Post';
-// import NotFound from './components/layout/NotFound';
+import AddEducation from './component/profile-forms/AddEducation';
+import Profiles from './component/profiles/profiles';
 import PrivateRoute from './component/routeing/PrivateRoute';
+import Profile from './component/profile/Profile';
 // import { LOGOUT } from './actions/types';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
-import AddEducation from './component/profile-forms/AddEducation';
+
 
 
 
@@ -64,8 +62,8 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
 
-          {/* <Route path='profiles' element={<Profiles />} /> */}
-          {/* <Route path='profile/:id' element={<Profile />} /> */}
+          <Route path='profiles' element={<Profiles />} />
+          <Route path='/profile/:id' element={<Profile />} />
           <Route
             path='dashboard'
             element={<PrivateRoute component={Dashboard} />}
