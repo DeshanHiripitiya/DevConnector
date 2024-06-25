@@ -15,11 +15,13 @@ import AddEducation from './component/profile-forms/AddEducation';
 import Profiles from './component/profiles/profiles';
 import PrivateRoute from './component/routeing/PrivateRoute';
 import Profile from './component/profile/Profile';
+import Posts from './component/posts/Posts';
 // import { LOGOUT } from './actions/types';
 
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
+
 
 
 
@@ -84,7 +86,7 @@ const App = () => {
         path='add-education'
         element={<PrivateRoute component={AddEducation} />}
       />
-          {/* <Route path='posts' element={<PrivateRoute component={Posts} />} /> */}
+          <Route path='posts' element={<PrivateRoute component={Posts} />} />
           {/* <Route path='posts/:id' element={<PrivateRoute component={Post} />} /> */}
           {/* <Route path='/*' element={<NotFound />} /> */}
         </Routes>
