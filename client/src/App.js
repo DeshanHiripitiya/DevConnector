@@ -67,7 +67,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
 
           <Route path='profiles' element={<Profiles />} />
-          <Route path='/profile/:id' element={<Profile />} />
+          <Route path='/profile/:id' element={<Profile />} /> 
           <Route
             path='dashboard'
             element={<PrivateRoute component={Dashboard} />}
