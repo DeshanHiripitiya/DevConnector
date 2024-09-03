@@ -11,11 +11,6 @@ const config = require('config');
 
 const User = require('../../models/User');
 
-// //--------------------------------------testing 1 that these are work
-
-// // @route GET api/users
-// // @desc Test route
-// // @access Public
 
 // router.get('/', (req, res) => res.send('User route'));
 

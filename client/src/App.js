@@ -16,11 +16,13 @@ import Profiles from './component/profiles/profiles';
 import PrivateRoute from './component/routeing/PrivateRoute';
 import Profile from './component/profile/Profile';
 import Posts from './component/posts/Posts';
+import store from './store';
+import Post from './component/post/Post';
 // import { LOGOUT } from './actions/types';
 
 // Redux
 import { Provider } from 'react-redux';
-import store from './store';
+
 
 
 
@@ -65,7 +67,7 @@ const App = () => {
           <Route path='/login' element={<Login />} />
 
           <Route path='profiles' element={<Profiles />} />
-          <Route path='/profile/:id' element={<Profile />} />
+          <Route path='/profile/:id' element={<Profile />} /> 
           <Route
             path='dashboard'
             element={<PrivateRoute component={Dashboard} />}
@@ -87,7 +89,7 @@ const App = () => {
         element={<PrivateRoute component={AddEducation} />}
       />
           <Route path='posts' element={<PrivateRoute component={Posts} />} />
-          {/* <Route path='posts/:id' element={<PrivateRoute component={Post} />} /> */}
+          <Route path='posts/:id' element={<PrivateRoute component={Post} />} />
           {/* <Route path='/*' element={<NotFound />} /> */}
         </Routes>
       </Router>

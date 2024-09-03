@@ -21,7 +21,7 @@ const Dashboard = ({
   return loading && profile == null ? (
     <Spinner />
   ) : (
-    <Fragment>
+    <section className="container">
       <h1 className='large text-primary'>Dashboard</h1>{' '}
       <p className='lead'>
         <i className='fas fa-user' /> Welcome {user && user.name}{' '}
@@ -47,7 +47,7 @@ const Dashboard = ({
           </Link>
         </>
       )}
-    </Fragment>
+    </section>
   );
   // <section className='container'>
   //
@@ -59,7 +59,7 @@ const Dashboard = ({
 
   //       <div className='my-2'>
   //         <button className='btn btn-danger' onClick={() => deleteAccount()}>
-  //           <i className='fas fa-user-minus' /> Delete My Account
+            // <i className='fas fa-user-minus' /> Delete My Account
   //         </button>
   //       </div>
   //     </>

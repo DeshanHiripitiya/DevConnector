@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, {  useState } from 'react';
 import { Link,Navigate } from 'react-router-dom'; //Purpose: The Link component is used to create navigational links in your application. It's similar to the HTML <a> tag but provides enhanced functionality suited for single-page applications (SPAs).
 //Purpose: The Navigate component is used to programmatically navigate to a different route. This can be useful for redirecting users under certain conditions, such as after form submission or authentication.
 import { connect } from 'react-redux'; //function is used to connect the React component to the Redux store. It allows the component to access the state and dispatch actions
@@ -28,7 +28,7 @@ const Login = ({ login, isAuthenticated
   }
 
   return (
-    <Fragment>
+    <section className='container'>
       <h1 className='large text-primary'>Sign In</h1>
       <p className='lead'>
         <i className='fas fa-user' /> Sign Into Your Account
@@ -57,7 +57,7 @@ const Login = ({ login, isAuthenticated
       <p className='my-1'>
         Don't have an account? <Link to='register'>Sign Up</Link>
       </p>
-    </Fragment>
+    </section>
   );
 };
 

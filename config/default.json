@@ -1,7 +1,5 @@
 {
     "mongoURI":"mongodb+srv://nipuna:nipuna2001@cluster0.exmbkq6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     "jwtSecret":"mysecrettoken",
-  "githubToken": "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"
-
-
+    "githubToken": "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"
 }

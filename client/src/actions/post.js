@@ -8,8 +8,8 @@ import {
   DELETE_POST,
   ADD_POST,
   GET_POST,
-//   ADD_COMMENT,
-//   REMOVE_COMMENT,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
 } from './types';
 
 /*
@@ -110,7 +110,7 @@ export const addPost = (formData) => async (dispatch) => {
 // Get post
 export const getPost = (id) => async (dispatch) => {
   try {
-    const res = await axios.get(`/posts/${id}`);
+    const res = await axios.get(`http://localhost:5000/api/posts/${id}`);
 
     dispatch({
       type: GET_POST,
@@ -127,10 +127,13 @@ export const getPost = (id) => async (dispatch) => {
 // Add comment
 export const addComment = (postId, formData) => async (dispatch) => {
   try {
-    const res = await axios.post(`/posts/comment/${postId}`, formData);
+    const res = await axios.post(
+      `http://localhost:5000/api/posts/comment/${postId}`,
+      formData
+    );
 
     dispatch({
-    //   type: ADD_COMMENT,
+      type: ADD_COMMENT,
       payload: res.data,
     });
 
@@ -146,10 +149,12 @@ export const addComment = (postId, formData) => async (dispatch) => {
 // Delete comment
 export const deleteComment = (postId, commentId) => async (dispatch) => {
   try {
-    await axios.delete(`/posts/comment/${postId}/${commentId}`);
+    await axios.delete(
+      `http://localhost:5000/api/posts/comment/${postId}/${commentId}`
+    );
 
     dispatch({
-    //   type: REMOVE_COMMENT,
+      type: REMOVE_COMMENT,
       payload: commentId,
     });
 

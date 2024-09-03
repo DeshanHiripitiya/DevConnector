@@ -286,10 +286,6 @@ button {
   width: 4rem;
 }
 
-.form .social-input i.fa-twitter {
-  color: #38a1f3;
-}
-
 .form .social-input i.fa-facebook {
   color: #3b5998;
 }
@@ -593,4 +589,11 @@ button {
   .post button {
     padding: 0.3rem 0.4rem;
   }
+}
+
+.alert-wrapper {
+  position: fixed;
+  top: 4rem;
+  right: 2rem; 
+  display: inline-block;
 }

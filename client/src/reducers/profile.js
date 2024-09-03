@@ -5,7 +5,7 @@ import {
   UPDATE_PROFILE,
   GET_PROFILES,
   GET_REPOS,
-//   NO_REPOS,
+  NO_REPOS,
 } from '../actions/types';
 
 const initialState = {
@@ -52,11 +52,11 @@ function profileReducer(state = initialState, action) {
         repos: payload,
         loading: false,
       };
-//     case NO_REPOS:
-//       return {
-//         ...state,
-//         repos: [],
-//       };
+    case NO_REPOS:
+      return {
+        ...state,
+        repos: [],
+      };
     default:
       return state;
   }
