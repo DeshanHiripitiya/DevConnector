@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
+require('dotenv').config();
 
 module.exports = function (req, res, next) {
   //next: A callback function to pass control to the next middleware function.
@@ -14,8 +14,8 @@ module.exports = function (req, res, next) {
 
   // Verify token
   try {
-    jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
-      //jwt.verify: This method verifies the token using the secret key. token: The token retrieved from the request header. 
+    jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+      //jwt.verify: This method verifies the token using the secret key. token: The token retrieved from the request header.
       //config.get('jwtSecret'): This retrieves the secret key from the configuration file. This secret key is used to verify the token.
       //Callback function (error, decoded): This callback function is executed after the token verification:
       //error: If there is an error during verification (e.g., token is invalid or expired), it is passed to this parameter.

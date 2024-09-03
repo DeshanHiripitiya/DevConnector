@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 // const normalize = require('normalize-url');
 let normalize;
 const axios = require('axios');
+require('dotenv').config();
 
 (async () => {
   normalize = (await import('normalize-url')).default;
@@ -336,7 +337,7 @@ router.get('/github/:username', async (req, res) => {
     );
     const headers = {
       'user-agent': 'node.js',
-      Authorization: `token ${config.get('githubToken')}`
+      Authorization: `token ${process.env.GITHUB_TOKEN}`,
     };
 
     const gitHubResponse = await axios.get(uri, { headers });
