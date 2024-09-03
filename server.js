@@ -2,6 +2,9 @@ const express = require('express')
 const connectDatabase = require('./config/db');
 const cors = require('cors');
 
+require('dotenv').config();
+
+const mongoURI = process.env.MONGO_URI;
 
 const  app = express()//creates a new Express application instance and assigns it to the constant variable app. This app variable can then be used to configure routes, middleware, and other settings for the web application.
 

@@ -19,7 +19,6 @@ const initialState = {
   skills: '',
   githubusername: '',
   bio: '',
-  twitter: '',
   facebook: '',
   linkedin: '',
   youtube: '',
@@ -69,7 +68,6 @@ const ProfileForm = ({
     skills,
     githubusername,
     bio,
-    twitter,
     facebook,
     linkedin,
     youtube,
@@ -126,7 +124,7 @@ const ProfileForm = ({
             value={company}
             onChange={onChange}
           />
-          <small className='form-text'>
+          <small className='form-text'> 
             Could be your own company or one you work for
           </small>
         </div>
@@ -202,16 +200,6 @@ const ProfileForm = ({
 
         {displaySocialInputs && (
           <Fragment>
-            <div className='form-group social-input'>
-              <i className='fab fa-twitter fa-2x' />
-              <input
-                type='text'
-                placeholder='Twitter URL'
-                name='twitter'
-                value={twitter}
-                onChange={onChange}
-              />
-            </div>
 
             <div className='form-group social-input'>
               <i className='fab fa-facebook fa-2x' />

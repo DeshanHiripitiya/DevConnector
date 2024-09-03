@@ -1,9 +1,17 @@
 //about profiles
 
 const express = require('express');
+const config = require('config');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
+// const normalize = require('normalize-url');
+let normalize;
+const axios = require('axios');
+
+(async () => {
+  normalize = (await import('normalize-url')).default;
+})();
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -52,99 +60,57 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // console.log(req.body);
-
     // destructure the request
     const {
-      company,
       website,
-      location,
-      bio,
-      status,
-      githubusername,
       skills,
       youtube,
-      twitter,
       instagram,
       linkedin,
       facebook,
       // spread the rest of the fields we don't need to check
-      //   ...rest
+      ...rest
     } = req.body;
 
-    //build the profile object
-    const profileFields = {};
-    profileFields.user = req.user.id;
-    if (company) profileFields.company = company;
-    if (website) profileFields.website = website;
-    if (location) profileFields.location = location;
-    if (bio) profileFields.bio = bio;
-    if (status) profileFields.status = status;
-    if (githubusername) profileFields.githubusername = githubusername;
-    if (skills) {
-      if (Array.isArray(skills)) {
-        profileFields.skills = skills.map((skill) => skill.trim());
-      } else {
-        profileFields.skills = skills.split(',').map((skill) => skill.trim());
-      }
-    }
-
-    // console.log(profileFields);
-
-    //build social object
-    profileFields.social = {};
-
-    if (youtube) profileFields.youtube = youtube;
-    if (twitter) profileFields.twitter = twitter;
-    if (facebook) profileFields.facebook = facebook;
-    if (linkedin) profileFields.linkedin = linkedin;
-    if (instagram) profileFields.instagram = instagram;
-
-    try {
-      let profile = await Profile.findOne({ user: req.user.id });
-
-      if (profile) {
-        //update
-        let profile = await Profile.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: profileFields },
-          { new: true, upsert: true, setDefaultsOnInsert: true }
-        );
-
-        return res.json(profile);
-      }
-      //create
-      profile = new Profile(profileFields);
-
-      await profile.save();
-      res.json(profile);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
-    }
     // build a profile
-    // const profileFields = {
-    //   user: req.user.id,
-    //   website:
-    //     website && website !== ''
-    //       ? normalize(website, { forceHttps: true })
-    //       : '',
-    //   skills: Array.isArray(skills)
-    //     ? skills
-    //     : skills.split(',').map((skill) => ' ' + skill.trim()),
-    //   ...rest
-    // };
+    const profileFields = {
+      user: req.user.id,
+      website:
+        // Replace this line where normalize() is used
+        website && website !== ''
+          ? await (
+              await import('normalize-url')
+            ).default(website, { forceHttps: true })
+          : '',
+      skills: Array.isArray(skills)
+        ? skills
+        : skills.split(',').map((skill) => ' ' + skill.trim()),
+      ...rest,
+    };
 
     // Build socialFields object
-    // const socialFields = { youtube, twitter, instagram, linkedin, facebook };
+    const socialFields = { youtube, instagram, linkedin, facebook };
 
     // normalize social fields to ensure valid url
-    // for (const [key, value] of Object.entries(socialFields)) {
-    //   if (value && value.length > 0)
-    //     socialFields[key] = normalize(value, { forceHttps: true });
-    // }
+    for (const [key, value] of Object.entries(socialFields)) {
+      if (value && value.length > 0)
+        socialFields[key] = normalize(value, { forceHttps: true });
+    }
     // add to profileFields
-    // profileFields.social = socialFields;
+    profileFields.social = socialFields;
+
+    try {
+      // Using upsert option (creates new doc if no match is found):
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: profileFields },
+        { new: true, upsert: true, setDefaultsOnInsert: true }
+      );
+      return res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).send('Server Error');
+    }
   }
 );
 
@@ -364,7 +330,7 @@ router.delete('/education/:exp_id', auth, async (req, res) => {
 // @access   Public
 router.get('/github/:username', async (req, res) => {
   try {
-    console.log(req.params.username);
+    // console.log(req.params.username);
     const uri = encodeURI(
       `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
     );
